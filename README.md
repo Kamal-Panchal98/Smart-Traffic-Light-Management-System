@@ -152,6 +152,13 @@ Smart Traffic Signal/
 
 ## Prerequisites
 
+### Install Python Dependencies
+
+Install the required Python packages:
+
+```bash
+pip install -r requirements.txt
+
 Before running the project:
 
 1. Clone or download this repository.
