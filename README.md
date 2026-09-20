@@ -1,109 +1,253 @@
-# Smart-Traffic-light-management-system
-This repository contains files for the traffic light management system using Reinforcement Learning.
+# Smart Traffic Light Management System
 
-## Basic Concept 
+An intelligent traffic signal optimization system that uses **Reinforcement Learning** and **SUMO (Simulation of Urban MObility)** to dynamically manage traffic signals and reduce vehicle waiting time.
 
-- Imagine a city grid with four traffic light nodes labeled as n1, n2, n3, and n4. 
-- In our model, decisions are made for each node, determining which side should have the green signal.
-- It is essential to establish a minimum time limit (e.g., 30 seconds) that our model cannot exceed when selecting the green light duration. 
-- The primary objective is to minimize the waiting time for vehicles at traffic signals, where waiting time is calculated by multiplying the total number of cars
-  at a signal by the number of seconds.
-- Each traffic signal has four waiting time counters for each side of the road, guiding the model's decision on which side to select for the green signal.
+The project simulates urban traffic networks, trains a reinforcement learning model on predefined traffic scenarios, and compares traffic congestion before and after optimization.
 
-## Training Approach:
+---
 
-![train_loop](https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/01f34cda-6e57-4472-a214-a9776ed9c376)
+## Project Overview
 
-- The model undergoes training based on numerous events, defined as predetermined motions where vehicles pass through nodes in a fixed (pseudo-random) manner.   
-- Keeping events fixed ensures consistent results, as using random events each time would yield unpredictable outcomes. 
-- Multiple fixed events are employed for training to enable the model to handle diverse situations. 
-- The model's sole input is the count of vehicles on the four sides of each traffic node, and its output determines the selected side for each node. 
-- The number of nodes varies depending on the grid's size.
+Traditional traffic signals operate using fixed timing patterns that may not adapt effectively to changing traffic conditions.
 
-## SUMO for Simulation:
-- We use SUMO (Simulator for Urban MObility) software to simulate the traffic lights in real time.
-- SUMO is employed for simulation purposes, providing a realistic environment to test and optimize traffic signal strategies in our model.
+This project explores a dynamic traffic-control approach where a reinforcement learning model determines which direction should receive a green signal based on the current number of vehicles waiting at each intersection.
 
-Here are examples of some of the maps used to train the model.
+The primary objective is to reduce **aggregate vehicle waiting time** and improve traffic flow across the simulated road network.
 
-### San Jose Downtown Map 
-![map](/Smart%20Traffic%20Signal/maps/San_Jose_Downtown_Map.jpg)
+---
 
-###  Epoch Vs Time for San Jose Downtown Map 
+## How the System Works
 
-![evst](/Smart%20Traffic%20Signal/Visualization/time_vs_epochs.png)
+Consider a city grid containing multiple traffic nodes such as:
 
-## Simulation without Training.
+- `n1`
+- `n2`
+- `n3`
+- `n4`
+
+At each node:
+
+1. Traffic approaches from four directions.
+2. The system tracks the number of vehicles waiting on each side.
+3. The reinforcement learning model receives the traffic state as input.
+4. The model selects which direction should receive the green signal.
+5. A minimum signal duration prevents unrealistic rapid switching.
+6. The simulation records vehicle waiting time and traffic performance.
+
+The number of traffic nodes can vary depending on the road network being simulated.
+
+---
+
+## Training Approach
+
+![Training Loop](https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/01f34cda-6e57-4472-a214-a9776ed9c376)
+
+The model is trained using multiple predefined traffic events representing different vehicle movement patterns.
+
+Using fixed pseudo-random traffic scenarios makes experiments reproducible and allows model performance to be compared consistently across training iterations.
+
+### Model Input
+
+The model receives the number of vehicles waiting on each side of a traffic intersection.
+
+### Model Output
+
+The model determines which direction should receive the green signal.
+
+Training across multiple traffic scenarios helps the model learn how to respond to different congestion patterns.
+
+---
+
+## Simulation Environment
+
+The project uses **SUMO (Simulation of Urban MObility)** to create and simulate realistic road networks, traffic flows, intersections, and vehicle movements.
+
+SUMO provides the simulation environment used to evaluate the traffic-control strategy before and after reinforcement learning.
+
+### San Jose Downtown Simulation Map
+
+![San Jose Downtown Map](/Smart%20Traffic%20Signal/maps/San_Jose_Downtown_Map.jpg)
+
+### Training Performance
+
+![Epoch vs Time](/Smart%20Traffic%20Signal/Visualization/time_vs_epochs.png)
+
+---
+
+## Simulation Comparison
+
+### Traffic Simulation Without Trained Model
 
 https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/267482d7-63bf-4c41-9221-7f713b5a64a5
 
-## Simulation of Trained Model.
+### Traffic Simulation With Trained Model
 
 https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/90c981f4-052b-4edb-9feb-f8684f6a1503
 
-## How to train new Networks.
+---
 
-Repository Download: Begin by downloading or cloning the repository.
-Ensure you have the SUMO GUI downloaded for running simulations. Obtain the SUMO GUI [here](https://sumo.dlr.de/docs/Downloads.php).
+## Technology Stack
 
-### Step 1 : Network and Route Creation: 
+- Python
+- Reinforcement Learning
+- SUMO
+- Traffic Simulation
+- Data Analysis
+- Tableau
 
-Utilize the SUMO netedit tool to craft a network (e.g., 'network.net.xml') and save it in the maps folder.
-Navigate to the maps folder and execute the following command:
- 
-`python randomTrips.py -n network.net.xml -r routes.rou.xml -e 500`
+---
 
-This command generates a 'routes.rou.xml' file for 500 simulation steps based on the network "network.net.xml."
+# Running the Project
 
-### Step 2 : Configuration File Setup:
+## Prerequisites
 
-Specify the network and route files in the Configuration file by changing the net-file and route-files under input.
+Before running the project:
 
-`<input>`        
-  `<net-file value='maps/city1.net.xml'/>`
-  `<route-files value='maps/city1.rou.xml'/>`
-`</input>`
+1. Clone or download this repository.
+2. Install Python and the required project dependencies.
+3. Install **SUMO GUI**.
 
-### Step 3 : Model Training:
+SUMO installation instructions:
 
-Utilize the 'train.py' file to train a model for this network:
+https://sumo.dlr.de/docs/Downloads.php
 
-`python train.py --train -e 50 -m model_name -s 500`
+---
 
-This code trains the model for 50 epochs, with -e setting the epochs, -m specifying the model_name saved in the model folder, and -s indicating the simulation to run for 500 steps. If --train is not specified, it loads 'model_name' from the model's folder. After simulation completion, time_vs_epoch graphs are displayed and saved in the Visualization folder as 'time_vs_epoch.png.'
+## Step 1 — Create the Traffic Network
 
-### Step 4 : Running Trained Model:<br/>
+Use SUMO's `netedit` tool to create a road network.
 
-To run a pre-trained model on the GUI, use 'train.py' with the command:
+Save the network file inside the `maps` directory.
 
-`python train.py -m model_name -s 500`
+Example:
 
-This opens the GUI for observing your model's performance. For accuracy, set the -s value the same for testing and training.
-After the completion fo the model you will get the total waiting time for 500 Simulation Steps.
+```text
+network.net.xml
+```
 
-![opt1](/Smart%20Traffic%20Signal/Output_data_files/trained_model.jpg)
+Generate traffic routes using:
 
-### Step 5 : Running the Simulation without training model to check the difference :
+```bash
+python randomTrips.py -n network.net.xml -r routes.rou.xml -e 500
+```
 
-To run a pre-trained model on the GUI, use 'without_training.py' with the command:
+This generates:
 
-`python without_training.py`
+```text
+routes.rou.xml
+```
 
-This will open the GUI for the original model and in the command line you will get the total waiting time for 500 Simulation Steps.
+for 500 simulation steps.
 
-![Simulation Output](/Smart%20Traffic%20Signal/Output_data_files/without_training.jpg)
+---
 
-### Step 6 : Results
+## Step 2 — Configure the Simulation
 
-Traffic Congestion without Training
+Specify the network and route files in the SUMO configuration file:
 
-![Traffic Congestion before training](https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/c2666b0c-4cd9-461d-98d8-755380b33ad4)
+```xml
+<input>
+    <net-file value="maps/city1.net.xml"/>
+    <route-files value="maps/city1.rou.xml"/>
+</input>
+```
 
-Traffic Cangestion after Training
+---
 
-![Traffic Congestion after training](https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/4ce08c76-a86e-4b99-96fe-349096ac783f)
+## Step 3 — Train the Model
 
-### Tableau Dashboard 
+Run:
 
-https://public.tableau.com/app/profile/maria.poulose/viz/SUMO-pjct_2/Dashboard1?publish=yes
+```bash
+python train.py --train -e 50 -m model_name -s 500
+```
 
+### Arguments
+
+- `--train` — enables training mode
+- `-e` — number of training epochs
+- `-m` — model name
+- `-s` — number of simulation steps
+
+Example:
+
+```bash
+python train.py --train -e 50 -m traffic_model -s 500
+```
+
+After training, performance visualizations are generated and saved in the project's visualization directory.
+
+---
+
+## Step 4 — Run the Trained Model
+
+Run:
+
+```bash
+python train.py -m model_name -s 500
+```
+
+This launches the SUMO GUI and runs the simulation using the trained model.
+
+For a fair comparison, use the same number of simulation steps during both training and testing.
+
+The simulation reports the total vehicle waiting time after completion.
+
+![Trained Model Output](/Smart%20Traffic%20Signal/Output_data_files/trained_model.jpg)
+
+---
+
+## Step 5 — Run the Baseline Simulation
+
+To compare the trained model against the original traffic-control strategy:
+
+```bash
+python without_training.py
+```
+
+The SUMO GUI will launch and report the total waiting time for the baseline simulation.
+
+![Baseline Simulation Output](/Smart%20Traffic%20Signal/Output_data_files/without_training.jpg)
+
+---
+
+## Results
+
+### Traffic Congestion Before Training
+
+![Traffic Congestion Before Training](https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/c2666b0c-4cd9-461d-98d8-755380b33ad4)
+
+### Traffic Congestion After Training
+
+![Traffic Congestion After Training](https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/71449727/4ce08c76-a86e-4b99-96fe-349096ac783f)
+
+The trained and baseline simulations can be compared using vehicle waiting time and observed congestion patterns.
+
+Exact performance improvements should be evaluated using the output generated by each simulation run.
+
+---
+
+## Tableau Dashboard
+
+A Tableau dashboard was also created to visualize simulation results and traffic-performance data.
+
+[View Tableau Dashboard](https://public.tableau.com/app/profile/maria.poulose/viz/SUMO-pjct_2/Dashboard1?publish=yes)
+
+---
+
+## Future Improvements
+
+Potential extensions include:
+
+- Multi-intersection traffic coordination
+- Additional traffic-network configurations
+- More complex traffic scenarios
+- Alternative reinforcement learning strategies
+- Real-time traffic-data integration
+- Additional performance metrics and dashboards
+
+---
+
+## Academic Context
+
+This project was developed as an academic technical project and is maintained on GitHub as part of my engineering portfolio.
