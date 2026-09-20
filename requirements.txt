@@ -1,0 +1,6 @@
+numpy
+matplotlib
+torch
+pyserial
+traci
+sumolib
