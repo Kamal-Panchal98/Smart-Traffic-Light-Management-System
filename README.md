@@ -97,6 +97,57 @@ https://github.com/Elcampeoncr7/Smart-Traffic-Light-Management-System/assets/714
 
 ---
 
+## Repository Structure
+
+```text
+Smart Traffic Signal/
+├── Demo Videos/
+│   ├── After Training.mp4
+│   └── Before Training.mp4
+│
+├── Output_data_files/
+│   ├── Traffic Congestion after training...
+│   ├── Traffic Congestion before training...
+│   ├── trained_model.jpg
+│   ├── tripinfo_original.xml
+│   ├── tripinfo.xml
+│   └── without_training.jpg
+│
+├── SUMO Simulation after Training the data/
+│   └── train.py
+│
+├── SUMO Simulation before Training the data/
+│   └── without_training.py
+│
+├── Trained model/
+│   └── JaiShreeRam_50.bin
+│
+├── Visualization/
+│   ├── SUMO-pjct_2.twbx
+│   └── time_vs_epochs.png
+│
+├── data/
+│   └── Training and Testing data/
+│       ├── San Jose Downtown OSM file...
+│       ├── Sjdt.net.xml
+│       ├── Sjdt.rou.alt.xml
+│       ├── Sjdt.rou.xml
+│       ├── Sjdt.sumocfg
+│       ├── randomTrips.py
+│       └── trips.trips.xml
+│
+└── maps/
+    └── San_Jose_Downtown_Map.jpg
+
+### Key Files
+
+- **`train.py`** — trains and runs the reinforcement-learning traffic signal simulation.
+- **`without_training.py`** — runs the baseline SUMO simulation for comparison.
+- **`Sjdt.sumocfg`** — SUMO simulation configuration.
+- **`randomTrips.py`** — generates traffic routes for the SUMO network.
+- **`time_vs_epochs.png`** — training-performance visualization.
+- **`SUMO-pjct_2.twbx`** — Tableau workbook for traffic-analysis visualization.    
+
 # Running the Project
 
 ## Prerequisites
